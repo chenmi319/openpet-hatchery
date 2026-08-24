@@ -25,6 +25,8 @@ ROW_FRAME_COUNTS = {
     "review": 6,
 }
 IMAGE_SUFFIXES = {".png", ".webp", ".jpg", ".jpeg"}
+DEFAULT_SMALL_OUTLIER_RATIO = 0.70
+DEFAULT_LARGE_OUTLIER_RATIO = 1.30
 
 
 def alpha_nonzero_count(image: Image.Image) -> int:
@@ -214,8 +216,12 @@ def main() -> None:
     parser.add_argument("--edge-pixel-threshold", type=int, default=24)
     parser.add_argument("--chroma-adjacent-threshold", type=float, default=150.0)
     parser.add_argument("--chroma-adjacent-pixel-threshold", type=int, default=800)
-    parser.add_argument("--small-outlier-ratio", type=float, default=0.35)
-    parser.add_argument("--large-outlier-ratio", type=float, default=2.75)
+    parser.add_argument(
+        "--small-outlier-ratio", type=float, default=DEFAULT_SMALL_OUTLIER_RATIO
+    )
+    parser.add_argument(
+        "--large-outlier-ratio", type=float, default=DEFAULT_LARGE_OUTLIER_RATIO
+    )
     parser.add_argument(
         "--require-components",
         action="store_true",
