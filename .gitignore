@@ -1,0 +1,23 @@
+# Local planning and tool state
+task_plan.md
+findings.md
+progress.md
+.serena/
+.codegraph/
+.ruff_cache/
+.DS_Store
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated and private working data
+work/
+.env
+.env.*
+!.env.example
+.imagegen.local.json
+
+# Final dist/ and previews/ are intentionally trackable after Gate 4.

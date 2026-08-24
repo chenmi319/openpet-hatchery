@@ -1,0 +1,11 @@
+{
+  "idle": "Six-frame calm loop: subtle breathing, one natural blink, and a tiny head bob. Keep both feet planted; the football rests touching the outside of the left boot. First and last frames nearly match.",
+  "running-right": "Eight-frame rightward close-control dribble. Face and travel right with alternating short strides, low center of gravity, quick body feints, and repeated soft left-foot touches. The football touches the left boot or foot in every frame.",
+  "running-left": "Eight-frame independently drawn leftward dribble and inward cut. Face and travel left while remaining left-foot dominant. Preserve the chest number 10 in normal reading order; never mirror the rightward row. The football touches the left boot or foot in every frame.",
+  "waving": "Four-frame friendly greeting: relaxed standing pose, right hand rises, gives one clear wave, then lowers. The football stays touching the left boot. No celebration gesture or motion marks.",
+  "jumping": "Five-frame goal celebration: slight crouch, light vertical hop with the football touching the rising left boot, landing, both index fingers pointing upward, then settle. Keep the action readable as a jump and sky-point celebration without shadows or detached effects.",
+  "failed": "Eight-frame missed-chance reaction: brief wince, shoulders and head lower, one quiet disappointed pause, then calm recovery. The football remains touching the left boot. No tears, symbols, smoke, or theatrical effects.",
+  "waiting": "Six-frame first-touch and scanning loop: cushion the football with the left foot, rest the sole lightly on it, lift the head to scan for an option, then return. The football always touches the foot.",
+  "running": "Six-frame non-travelling left-foot finishing loop: compact setup, plant the right foot, draw back the left leg, crisp left-foot contact while the football still overlaps the boot, follow-through, then reset before the ball departs. No literal running or directional travel.",
+  "review": "Six-frame playmaker review loop: head turns to scan space, body opens, left foot shapes a disguised pass while still touching the football, eyes follow the imagined lane, then return to the ready pose. No paper, UI, symbols, or added props."
+}

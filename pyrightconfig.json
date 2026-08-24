@@ -1,0 +1,10 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "include": [
+    ".opencode/skills/hatch-pet/scripts",
+    ".opencode/skills/imagegen/scripts",
+    "scripts",
+    "tests"
+  ]
+}

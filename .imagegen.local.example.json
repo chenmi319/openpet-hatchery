@@ -1,0 +1,4 @@
+{
+  "baseUrl": "https://your-private-image-api.example/v1",
+  "apiKeyFile": "~/.secrets/your-image-api-key"
+}
