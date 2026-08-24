@@ -5,7 +5,7 @@
 - ID: `goat-leo`
 - Display name: `GOAT Leo`
 - Format: OpenPets V1, 8 columns x 9 rows, 192x208 per cell
-- Style: strict 2x pixel grid, effective 96x104 logical pixels
+- Style: full-resolution 192x208 pixel illustration with crisp outlines and controlled antialiasing
 - Reference policy: text-only canonical base; no third-party photos
 - Positioning: respectful fan tribute, not parody
 
@@ -44,6 +44,6 @@ Total used frames: 57. Unused cells must be fully transparent.
 - `10` is present, readable, not mirrored, and not replaced by another glyph.
 - Football remains one canonical black-and-white design and touches the player in every frame.
 - Left-foot dominance is visually consistent.
-- No crop, cell overlap, size pop, baseline jump, repeated static row, chroma fringe, hidden RGB residue, antialiasing, detached component, or forbidden mark.
+- No crop, cell overlap, size pop, baseline jump, repeated static row, chroma fringe, hidden RGB residue, detached component, or forbidden mark.
 - `running-left` must be generated independently.
 - All deterministic checks and visual GIF review must pass before packaging.

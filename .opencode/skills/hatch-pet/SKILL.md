@@ -46,7 +46,7 @@ uv run python "$SKILL_DIR/scripts/prepare_pet_run.py" \
   --description "An iconic left-footed footballer inspired by Lionel Messi's 2022 world-champion era, featuring close control, creative passing, clinical finishing, and his sky-point celebration. Unofficial fan-made pet; not affiliated with or endorsed by Lionel Messi, any federation, or any club." \
   --pet-notes "$(cat pets/goat-leo/identity.txt)" \
   --style-preset pixel \
-  --style-notes "strict 2x pixel grid, limited palette, hard edges, fixed dark outline, no antialiasing" \
+  --style-notes "full-resolution 192x208 pixel illustration, crisp fixed dark outline, controlled antialiasing, no forced 2x pixel blocks" \
   --state-overrides-file pets/goat-leo/state-overrides.json \
   --forbid-running-left-mirror \
   --output-dir "$RUN_DIR"
@@ -72,7 +72,7 @@ After accepting an output, copy it to the job's `decoded/` path and atomically u
 ## Approval Gates
 
 1. Generate at most three base candidates. Show them and stop until the user chooses one.
-2. Generate `idle` and `running-right`. Build focused previews; stop for identity, number, ball, pixel-grid, and gait approval.
+2. Generate `idle` and `running-right`. Build focused previews; stop for identity, number, ball, detail clarity, and gait approval.
 3. Generate remaining rows. Build contact sheet and all nine GIFs; stop so the user can prioritize repairs.
 4. After targeted repairs, build final atlas and package; stop for the user's manual OpenPets import.
 
@@ -99,12 +99,12 @@ uv run python "$SKILL_DIR/scripts/compose_atlas.py" \
   --frames-root "$RUN_DIR/frames" \
   --output "$RUN_DIR/final/spritesheet.png" \
   --webp-output "$RUN_DIR/final/spritesheet.webp" \
-  --pixel-grid-scale 2
+  --pixel-grid-scale 1
 
 uv run python "$SKILL_DIR/scripts/validate_atlas.py" \
   "$RUN_DIR/final/spritesheet.webp" \
   --json-out "$RUN_DIR/final/validation.json" \
-  --pixel-grid-scale 2
+  --pixel-grid-scale 1
 
 uv run python "$SKILL_DIR/scripts/make_contact_sheet.py" \
   "$RUN_DIR/final/spritesheet.webp" \
@@ -132,7 +132,7 @@ Write these under `dist/<pet-id>/`, then create `dist/<pet-id>.zip` without an e
 
 - Exact `1536x1872` WebP, 8x9 cells, 57 used frames.
 - Unused cells fully transparent; transparent pixels have zero RGB residue.
-- Every used cell conforms to 2x pixel grid.
+- Every used cell preserves full 192x208 source detail with controlled antialiasing.
 - Same face, hair, beard, body proportions, kit, `10`, shoes, and football in all frames.
 - Football touches or overlaps the player; no detached components.
 - No logos, crests, flags, brands, sponsors, other text, scenery, shadows, trails, glow, or chroma residue.

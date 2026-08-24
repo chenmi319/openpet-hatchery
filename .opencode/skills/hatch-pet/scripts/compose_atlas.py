@@ -171,7 +171,7 @@ def main() -> None:
         "--pixel-grid-scale",
         type=int,
         default=1,
-        help="Make each logical pixel an NxN hard-edged block; GOAT Leo uses 2.",
+        help="Make each logical pixel an NxN hard-edged block; use 1 to preserve full frame resolution.",
     )
     parser.add_argument(
         "--resize-source",
