@@ -8,9 +8,9 @@ GOAT Leo — an unofficial fan-made pixel companion inspired by Lionel Messi's 2
 
 Repository: `https://github.com/chenmi319/openpet-hatchery`
 
-Package: replace with a commit-pinned URL to `dist/goat-leo.zip` after Gate 4.
+Package: `https://raw.githubusercontent.com/chenmi319/openpet-hatchery/868f0810b3cb0fd97cb1ba718bc0a274c919cc0c/dist/goat-leo.zip`
 
-Preview: replace with a commit-pinned URL to `previews/goat-leo/` after Gate 4.
+Preview: `https://github.com/chenmi319/openpet-hatchery/tree/868f0810b3cb0fd97cb1ba718bc0a274c919cc0c/previews/goat-leo`
 
 Rights: fan-made. I created/generated and assembled the submitted pet artwork. I grant OpenPets non-exclusive permission to host, display, publish, reproduce, and distribute this pet through the OpenPets Gallery, catalog, application, and associated package hosting.
 
