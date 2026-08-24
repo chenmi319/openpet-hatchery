@@ -296,56 +296,56 @@
       "row": 5,
       "column": 0,
       "used": true,
-      "nontransparent_pixels": 11612
+      "nontransparent_pixels": 11056
     },
     {
       "state": "failed",
       "row": 5,
       "column": 1,
       "used": true,
-      "nontransparent_pixels": 11660
+      "nontransparent_pixels": 10444
     },
     {
       "state": "failed",
       "row": 5,
       "column": 2,
       "used": true,
-      "nontransparent_pixels": 13112
+      "nontransparent_pixels": 10076
     },
     {
       "state": "failed",
       "row": 5,
       "column": 3,
       "used": true,
-      "nontransparent_pixels": 16580
+      "nontransparent_pixels": 8256
     },
     {
       "state": "failed",
       "row": 5,
       "column": 4,
       "used": true,
-      "nontransparent_pixels": 13472
+      "nontransparent_pixels": 9348
     },
     {
       "state": "failed",
       "row": 5,
       "column": 5,
       "used": true,
-      "nontransparent_pixels": 11188
+      "nontransparent_pixels": 10064
     },
     {
       "state": "failed",
       "row": 5,
       "column": 6,
       "used": true,
-      "nontransparent_pixels": 11464
+      "nontransparent_pixels": 11008
     },
     {
       "state": "failed",
       "row": 5,
       "column": 7,
       "used": true,
-      "nontransparent_pixels": 11664
+      "nontransparent_pixels": 11072
     },
     {
       "state": "waiting",

@@ -2,7 +2,9 @@
   "ok": true,
   "frames_root": "generated frames (not tracked)",
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "failed used extraction method stable-slots; confirm motion playback remains stable and unclipped"
+  ],
   "rows": [
     {
       "state": "idle",
@@ -528,21 +530,23 @@
       "state": "failed",
       "expected_frames": 8,
       "actual_frames": 8,
-      "extraction_method": "components",
+      "extraction_method": "stable-slots",
       "ok": true,
       "errors": [],
-      "warnings": [],
+      "warnings": [
+        "failed used extraction method stable-slots; confirm motion playback remains stable and unclipped"
+      ],
       "frames": [
         {
           "index": 0,
           "file": "failed/00.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 12641,
+          "nontransparent_pixels": 12216,
           "bbox": [
-            50,
+            48,
             5,
-            142,
+            143,
             203
           ],
           "edge_pixels": 0,
@@ -553,10 +557,10 @@
           "file": "failed/01.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 12663,
+          "nontransparent_pixels": 11524,
           "bbox": [
             48,
-            5,
+            11,
             144,
             203
           ],
@@ -568,11 +572,11 @@
           "file": "failed/02.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 14095,
+          "nontransparent_pixels": 11087,
           "bbox": [
-            39,
-            5,
-            152,
+            44,
+            24,
+            148,
             203
           ],
           "edge_pixels": 0,
@@ -583,11 +587,11 @@
           "file": "failed/03.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 17655,
+          "nontransparent_pixels": 9161,
           "bbox": [
-            24,
-            5,
-            168,
+            43,
+            58,
+            149,
             203
           ],
           "edge_pixels": 0,
@@ -598,11 +602,11 @@
           "file": "failed/04.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 14491,
+          "nontransparent_pixels": 10267,
           "bbox": [
-            41,
-            5,
-            151,
+            48,
+            33,
+            144,
             203
           ],
           "edge_pixels": 0,
@@ -613,10 +617,10 @@
           "file": "failed/05.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 12145,
+          "nontransparent_pixels": 11094,
           "bbox": [
             49,
-            5,
+            10,
             143,
             203
           ],
@@ -628,11 +632,11 @@
           "file": "failed/06.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 12550,
+          "nontransparent_pixels": 12114,
           "bbox": [
-            50,
+            49,
             5,
-            141,
+            143,
             203
           ],
           "edge_pixels": 0,
@@ -643,11 +647,11 @@
           "file": "failed/07.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 12672,
+          "nontransparent_pixels": 12204,
           "bbox": [
-            50,
+            49,
             5,
-            142,
+            143,
             203
           ],
           "edge_pixels": 0,
