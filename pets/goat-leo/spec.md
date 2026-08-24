@@ -19,7 +19,7 @@ Canonical identity text lives in `identity.txt`. Animation actions live in `stat
 
 | Row | State | Frames | GOAT Leo action |
 |---:|---|---:|---|
-| 0 | idle | 6 | Sky-point celebration, settle, rise, and return |
+| 0 | idle | 6 | Breathing, blink, ball beside left boot |
 | 1 | running-right | 8 | Close-control rightward dribble |
 | 2 | running-left | 8 | Independent leftward dribble and inward cut |
 | 3 | waving | 4 | Standard friendly wave |

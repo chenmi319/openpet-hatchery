@@ -20,11 +20,11 @@
           "file": "idle/00.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 11408,
+          "nontransparent_pixels": 12186,
           "bbox": [
-            42,
+            50,
             5,
-            149,
+            141,
             203
           ],
           "edge_pixels": 0,
@@ -35,11 +35,11 @@
           "file": "idle/01.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 11825,
+          "nontransparent_pixels": 12285,
           "bbox": [
-            42,
+            50,
             5,
-            149,
+            142,
             203
           ],
           "edge_pixels": 0,
@@ -50,9 +50,9 @@
           "file": "idle/02.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 13010,
+          "nontransparent_pixels": 12166,
           "bbox": [
-            51,
+            50,
             5,
             141,
             203
@@ -65,11 +65,11 @@
           "file": "idle/03.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 13938,
+          "nontransparent_pixels": 12107,
           "bbox": [
-            47,
+            50,
             5,
-            144,
+            141,
             203
           ],
           "edge_pixels": 0,
@@ -80,11 +80,11 @@
           "file": "idle/04.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 10558,
+          "nontransparent_pixels": 12131,
           "bbox": [
-            52,
+            50,
             5,
-            140,
+            141,
             203
           ],
           "edge_pixels": 0,
@@ -95,11 +95,11 @@
           "file": "idle/05.png",
           "width": 192,
           "height": 208,
-          "nontransparent_pixels": 11408,
+          "nontransparent_pixels": 12109,
           "bbox": [
-            42,
+            50,
             5,
-            149,
+            141,
             203
           ],
           "edge_pixels": 0,
