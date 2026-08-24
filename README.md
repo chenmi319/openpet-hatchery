@@ -4,6 +4,16 @@ Project-local OpenCode skills, reproducible specifications, QA evidence, and fin
 
 The first pet is **GOAT Leo**, an unofficial fan-made pixel companion inspired by Lionel Messi's 2022 world-champion era. This project is not affiliated with or endorsed by Lionel Messi, any federation, any club, or OpenPets.
 
+## Featured Pet
+
+**GOAT Leo** is featured in the official [OpenPets Gallery](https://openpets.dev/pets/goat-leo-openpets).
+
+```bash
+npx -y install-pet goat-leo
+```
+
+The official package is available from [OpenPets](https://zip.openpets.dev/pets/goat-leo-openpets/goat-leo.zip).
+
 ## Layout
 
 ```text

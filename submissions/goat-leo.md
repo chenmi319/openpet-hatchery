@@ -12,6 +12,14 @@ Package: `https://raw.githubusercontent.com/chenmi319/openpet-hatchery/main/dist
 
 Preview: `https://github.com/chenmi319/openpet-hatchery/tree/main/previews/goat-leo`
 
+Official Gallery: `https://openpets.dev/pets/goat-leo-openpets`
+
+Official package: `https://zip.openpets.dev/pets/goat-leo-openpets/goat-leo.zip`
+
+Install: `npx -y install-pet goat-leo`
+
+Status: imported and featured in the OpenPets catalog on 2026-08-24.
+
 Rights: fan-made. I created/generated and assembled the submitted pet artwork. I grant OpenPets non-exclusive permission to host, display, publish, reproduce, and distribute this pet through the OpenPets Gallery, catalog, application, and associated package hosting.
 
 This work is unofficial and is not affiliated with or endorsed by Lionel Messi, any federation, or any club. I do not claim ownership of, or authority to license, Lionel Messi's name or likeness, trademarks, or other third-party rights.
