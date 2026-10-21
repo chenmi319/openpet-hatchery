@@ -22,41 +22,41 @@ ROWS = [
     ("running-right", 1, 8, "rightward drag movement loop"),
     ("running-left", 2, 8, "leftward drag movement loop"),
     ("waving", 3, 4, "greeting or attention gesture"),
-    ("jumping", 4, 5, "hover or playful jump"),
+    ("jumping", 4, 5, "success or celebration reaction"),
     ("failed", 5, 8, "blocked, failed, or cancelled reaction"),
     ("waiting", 6, 6, "waiting for approval, help, or user input"),
     ("running", 7, 6, "active task work or processing"),
-    ("review", 8, 6, "ready or completed output review"),
+    ("review", 8, 6, "thinking or focused review"),
 ]
 
 STATE_PROMPTS = {
-    "idle": "Calm low-distraction resting loop: subtle breathing, tiny blink, slight head/body bob, and only quiet persona-preserving motion.",
+    "idle": "Calm low-distraction resting loop: subtle breathing, slight eyelid changes, small head/body motion, and only quiet persona-preserving motion. The host's 5500ms six-frame cycle cannot express a brief full-eye blink in one frame.",
     "running-right": "Dragging-right loop: show directional movement to the right through body and limb poses only.",
     "running-left": "Dragging-left loop: show directional movement to the left through body and limb poses only.",
     "waving": "Greeting loop: paw or limb down, raised, tilted, and returning in a friendly attention gesture.",
-    "jumping": "Hover jump loop: anticipation, lift, airborne peak, descent, and settle through body height.",
+    "jumping": "Success celebration loop: a clear joyful pose or playful jump fitting the pet persona; keep the loop readable when played twice.",
     "failed": "Blocked/failed loop: slumped or deflated reaction with sad or closed eyes.",
     "waiting": "Needs-input loop: expectant asking pose for approval, help, or user input.",
-    "running": "Working loop: focused active-task processing, thinking, typing, scanning, or effortful concentration; not literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, or directional travel.",
-    "review": "Ready-review loop: focused inspection of completed output with lean, blink, narrowed eyes, head tilt, or paw pose.",
+    "running": "Active-work loop: purposeful focused activity fitting the pet persona, distinct from its calmer thinking loop. Use the approved character action without directional travel across slots.",
+    "review": "Thinking loop: focused observation or persona-specific activity, calmer than active work and readable in a continuous loop.",
 }
 
 STATE_REQUIREMENTS = {
     "idle": [
         "CRITICAL: idle is the low-distraction baseline state and the first frame is also used as the reduced-motion static pet.",
-        "Use only subtle idle motion: gentle breathing, a tiny blink, a slight head or body bob, a very small material sway, or another quiet motion that fits the pet persona.",
+        "Use only subtle idle motion: gentle breathing, slight eyelid changes, a slight head or body bob, or another quiet motion that fits the pet persona. Do not hold fully closed eyes for one long host frame to simulate a brief blink.",
         "Keep the pet essentially in the same pose, facing direction, silhouette, markings, palette, and prop state across all 6 frames.",
         "Idle variation must stay calm but still read as animation; do not repeat effectively identical copies across the loop.",
         "Do not show waving, walking, running, jumping, talking, working, reviewing, emotional reactions, large gestures, item interactions, or new props.",
         "Feet, base, body, or object anchor should remain planted or nearly planted.",
-        "The first and last frames should be very close visually so the loop feels calm and does not pop.",
+        "The last frame must continue naturally into the first; do not duplicate a pose only to insert a pause.",
     ],
     "waving": [
         "Show the greeting through paw, hand, wing, or limb pose only.",
         "Do not draw wave marks, motion arcs, lines, sparkles, symbols, or floating effects around the gesture.",
     ],
     "jumping": [
-        "Show the jump through pose and vertical body position only: anticipation, lift, airborne peak, descent, settle.",
+        "Show success through the approved character celebration. The row name does not require a literal jump; preserve a continuous loop if the approved action is running celebration.",
         "Do not draw ground shadows, contact shadows, drop shadows, oval shadows, landing marks, dust, smears, bounce pads, or motion marks under the pet.",
         "Keep the background outside the pet perfectly flat chroma key with no darker key-colored patches.",
     ],
@@ -70,11 +70,11 @@ STATE_REQUIREMENTS = {
         "Keep the motion patient and readable, without turning it into ordinary idle or review.",
     ],
     "running": [
-        "Show the pet actively working or processing, as if running a task: focused posture, busy hands or paws, purposeful bobbing, thinking motion, tool or prop motion only if already part of the pet identity, or other non-locomotion activity.",
-        "Do not show literal foot-running, jogging, sprinting, treadmill motion, raised knees, long steps, pumping arms, directional travel, speed lines, dust clouds, floor shadows, motion trails, or detached motion effects.",
+        "Show active work through the approved persona action, including running poses if requested. Keep the character anchored within its slot rather than traveling across the image.",
+        "Do not draw speed lines, dust clouds, floor shadows, motion trails, or detached motion effects.",
     ],
     "review": [
-        "Show review through lean, blink, narrowed eyes, head tilt, or paw/hand position.",
+        "Show thinking or review through the approved persona action. A running pose is permitted when explicitly requested; keep it calmer than the active-work state.",
         "Do not add magnifying glasses, papers, code, UI, punctuation, symbols, or other new props unless they already exist in the base pet identity.",
     ],
     "running-right": [

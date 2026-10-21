@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
-from PIL import Image, ImageDraw
+from PIL import GifImagePlugin, Image, ImageDraw
 
 ROOT = Path(__file__).parents[1]
 
@@ -30,9 +30,97 @@ inspect_frames = load_module(
     "inspect_frames", ".opencode/skills/hatch-pet/scripts/inspect_frames.py"
 )
 package = load_module("package_pet", "scripts/package_pet.py")
+preview = load_module("render_animation_previews", ".opencode/skills/hatch-pet/scripts/render_animation_previews.py")
 
 
 class PetPipelineTests(unittest.TestCase):
+    def test_preview_matches_host_totals_and_gif_rounding(self) -> None:
+        expected = {"idle": 5500, "running-right": 1060, "running-left": 1060, "waving": 700, "jumping": 840, "failed": 1220, "waiting": 1010, "running": 820, "review": 1030}
+        for state, duration in expected.items():
+            timings = preview.ROW_DURATIONS[state]
+            self.assertEqual(sum(timings), duration)
+            self.assertLessEqual(max(timings) - min(timings), 10)
+            self.assertTrue(all(value > 0 and value % 10 == 0 for value in timings))
+        self.assertEqual(sum(preview.gif_durations(6, 2200)), 2200)
+        for count, duration in ((0, 820), (6, 5), (6, 821)):
+            with self.assertRaises(ValueError):
+                preview.gif_durations(count, duration)
+
+    def test_preview_gif_round_trip_and_waiting_cli(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for state, (count, _duration) in preview.ROW_TIMINGS.items():
+                folder = root / "frames" / state
+                folder.mkdir(parents=True)
+                for index in range(count):
+                    frame = Image.new("RGBA", (192, 208))
+                    ImageDraw.Draw(frame).rectangle((60 + index, 70, 110, 180), fill=(30, 120, 200, 255))
+                    frame.save(folder / f"{index:02d}.png")
+            subprocess.run([sys.executable, str(ROOT / ".opencode/skills/hatch-pet/scripts/render_animation_previews.py"), "--frames-root", str(root / "frames"), "--output-dir", str(root / "gif"), "--waiting-duration-ms", "2200"], check=True, capture_output=True)
+            for state, (count, duration) in preview.ROW_TIMINGS.items():
+                with Image.open(root / "gif" / f"{state}.gif") as saved:
+                    # 通用 ImageFile 不保证多帧接口；明确断言输出 GIF，再检查帧数与时序。
+                    assert isinstance(saved, GifImagePlugin.GifImageFile)
+                    self.assertEqual(saved.n_frames, count)
+                    total = 0
+                    for index in range(saved.n_frames):
+                        saved.seek(index)
+                        total += saved.info["duration"]
+                    self.assertEqual(total, 2200 if state == "waiting" else duration)
+
+    def test_packager_rejects_metadata_and_unsupported_extensions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            Image.new("RGBA", package.ATLAS_SIZE).save(root / "spritesheet.webp", lossless=True)
+            good = {"id": "goat-leo", "displayName": "GOAT Leo", "description": "test", "spritesheetPath": "spritesheet.webp"}
+            bad = [[], {}, {**good, "id": "builtin"}, {**good, "id": 1}, {**good, "displayName": " "}, {**good, "displayName": "😀" * 41}, {**good, "description": "a" * 501}, {**good, "description": None}, {**good, "spriteVersionNumber": 1}, {**good, "spriteVersionNumber": 2}, {**good, "wardrobe": {}}, {**good, "spritesheetPath": "spritesheet.svg"}]
+            for metadata in bad:
+                with self.subTest(metadata=metadata):
+                    (root / "pet.json").write_text(json.dumps(metadata))
+                    with self.assertRaises(ValueError):
+                        package.validate_pet(root)
+            (root / "pet.json").write_text(json.dumps(good))
+            package.validate_pet(root)
+
+    def test_packager_rejects_extra_directory_symlinks_sizes_and_animated_atlas(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "pet"
+            root.mkdir()
+            metadata = {"id": "goat-leo", "displayName": "GOAT Leo", "description": "test", "spritesheetPath": "spritesheet.webp"}
+            (root / "pet.json").write_text(json.dumps(metadata))
+            atlas = Image.new("RGBA", package.ATLAS_SIZE)
+            atlas.save(root / "spritesheet.webp", lossless=True)
+            (root / "extra").mkdir()
+            with self.assertRaises(ValueError):
+                package.validate_pet(root)
+            (root / "extra").rmdir()
+            link = Path(directory) / "link"
+            link.symlink_to(root, target_is_directory=True)
+            with self.assertRaises(ValueError):
+                package.validate_pet(link)
+            (root / "pet.json").unlink()
+            original = Path(directory) / "metadata.json"
+            original.write_text(json.dumps(metadata))
+            (root / "pet.json").symlink_to(original)
+            with self.assertRaises(ValueError):
+                package.validate_pet(root)
+            (root / "pet.json").unlink()
+            (root / "pet.json").write_text(json.dumps(metadata))
+            from unittest import mock
+            for constant in ("MAX_METADATA_BYTES", "MAX_ATLAS_BYTES"):
+                with mock.patch.object(package, constant, 1), self.assertRaises(ValueError):
+                    package.validate_pet(root)
+            output = Path(directory) / "pet.zip"
+            output.write_bytes(b"previous package")
+            with mock.patch.object(package, "MAX_ZIP_BYTES", 1), self.assertRaises(ValueError):
+                package.package_pet(root, output)
+            self.assertEqual(output.read_bytes(), b"previous package")
+            alternate = atlas.copy()
+            alternate.putpixel((60, 80), (255, 0, 0, 255))
+            atlas.save(root / "spritesheet.webp", save_all=True, append_images=[alternate], duration=100, lossless=True)
+            with self.assertRaises(ValueError):
+                package.validate_pet(root)
+
     def test_frame_inspector_warns_for_size_outliers(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             frames_root = Path(directory)

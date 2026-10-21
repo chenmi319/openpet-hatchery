@@ -26,7 +26,7 @@ Canonical identity text lives in `identity.txt`. Animation actions live in `stat
 | 4 | jumping | 5 | Light hop, landing, sky-point celebration |
 | 5 | failed | 8 | Missed chance, quiet disappointment, recovery |
 | 6 | waiting | 6 | First touch, sole on ball, scan |
-| 7 | running | 6 | Stationary left-foot finishing cycle |
+| 7 | running | 6 | Forward-facing close-control dribble run |
 | 8 | review | 6 | Scan, open body, disguised left-foot pass |
 
 Total used frames: 57. Unused cells must be fully transparent.

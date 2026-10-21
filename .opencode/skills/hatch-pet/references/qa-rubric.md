@@ -1,6 +1,6 @@
 # QA Rubric
 
-Do not accept an atlas until all checks pass.
+Do not accept an atlas until all checks pass. Provisional review atlases may be delivered earlier when their sources, defects and unperformed checks are explicit; a review delivery is not acceptance. See `review-workflow.md`.
 
 ## Geometry
 
@@ -17,6 +17,7 @@ Do not accept an atlas until all checks pass.
 - Same silhouette and proportions across every row.
 - Same face and expression language.
 - Same style, material, palette, lighting, and prop design.
+- Judge visible size and anchor consistency at `192x208`, normal playback and state transitions. Do not silently substitute zero changed pixels for no visible drift; agree any exact tolerance first. A mask is edit guidance, not proof of geometry preservation.
 - No frame introduces a new unintended character or object.
 
 ## Pet-Safe Style
@@ -57,10 +58,14 @@ Do not accept an atlas until all checks pass.
 
 ## Repair Policy
 
-Repair the smallest failing scope first:
+Edit the smallest scope that can fix the root cause, but assess the complete affected animation after each edit:
 
 1. Single bad frame.
 2. One row.
 3. Full atlas regeneration only when identity or layout is broadly broken.
 
-The normal production path should regenerate only the affected row and copy the selected replacement into the same decoded output path unless the base character is wrong.
+Review the whole nine-action candidate and collect priorities before pursuing isolated micro-defects. Keep the best complete-action candidate when an edit regresses. After two consecutive edits of one defect without visible improvement, change the reference/pose organization or pause with the limitation; do not repeat near-identical paid edits indefinitely.
+
+Within an approved delegated stage, avoid per-frame questions and deliver complete normal/slow previews plus before/after comparison at the stage boundary. Reject extra limbs, wrong text or missing props early; do not postpone complete-animation review for pixel polish. Never mirror readable details, copy frames, shift whole sprites or change timing to fake movement.
+
+The normal production path should regenerate only the affected row and copy a visually accepted replacement into the same decoded output path unless the base character is wrong. Provisional candidates stay in separate `work/` outputs, not accepted job paths or final packages.

@@ -26,6 +26,7 @@ DEFAULT_CONCURRENCY = 5
 DEFAULT_DOWNSCALE_SUFFIX = "-web"
 DEFAULT_OUTPUT_PATH = "output/imagegen/output.png"
 GPT_IMAGE_MODEL_PREFIX = "gpt-image-"
+NANO_BANANA_MODEL = "Nano Banana 2.1"
 
 ALLOWED_SIZES = {"1024x1024", "1536x1024", "1024x1536", "auto"}
 ALLOWED_QUALITIES = {"low", "medium", "high", "auto"}
@@ -34,7 +35,6 @@ ALLOWED_INPUT_FIDELITIES = {"low", "high", None}
 
 MAX_IMAGE_BYTES = 50 * 1024 * 1024
 MAX_BATCH_JOBS = 500
-HARD_MAX_CALLS = 100
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "config/imagegen.json"
 DEFAULT_RUNTIME_CONFIG_PATH = PROJECT_ROOT / ".imagegen.local.json"
@@ -127,11 +127,10 @@ def _read_api_key(path: Path) -> str:
     return key
 
 
-def _reserve_call(ledger_path: str | None, max_calls: int, operation: str, model: str) -> None:
+def _reserve_call(ledger_path: str | None, max_calls: int | None, operation: str, model: str) -> None:
     if not ledger_path:
-        _die("Live calls require --ledger so paid usage cannot bypass the project budget.")
-    if max_calls < 1 or max_calls > HARD_MAX_CALLS:
-        _die(f"--max-calls must be between 1 and {HARD_MAX_CALLS}.")
+        _die("Live calls require --ledger to record every request attempt.")
+    # 保留旧调用签名兼容历史脚本；max_calls 不再限制次数，授权由人工审批控制。
 
     path = Path(ledger_path)
     if path.exists():
@@ -140,15 +139,14 @@ def _reserve_call(ledger_path: str | None, max_calls: int, operation: str, model
         except (OSError, json.JSONDecodeError) as exc:
             _die(f"Cannot read call ledger: {exc}")
     else:
-        ledger = {"schemaVersion": 1, "maxCalls": max_calls, "calls": []}
+        ledger = {"schemaVersion": 1, "calls": []}
 
+    if not isinstance(ledger, dict):
+        _die("Call ledger must be a JSON object.")
     calls = ledger.get("calls")
     if not isinstance(calls, list):
         _die("Call ledger has an invalid calls field.")
-    if len(calls) >= max_calls:
-        _die(f"Image call budget exhausted ({len(calls)}/{max_calls}).")
-
-    # 先记账再发请求。网络中断也可能已经计费，宁可保守占用额度，不允许崩溃后静默重试超支。
+    # 先记账再发请求：网络中断仍可能计费，记录的是尝试次数而非成功图片或账单。
     calls.append(
         {
             "number": len(calls) + 1,
@@ -157,7 +155,7 @@ def _reserve_call(ledger_path: str | None, max_calls: int, operation: str, model
             "reservedAt": datetime.now(timezone.utc).isoformat(),
         }
     )
-    ledger["maxCalls"] = max_calls
+    ledger.pop("maxCalls", None)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
@@ -283,10 +281,25 @@ def _validate_input_fidelity(input_fidelity: Optional[str]) -> None:
 
 
 def _validate_model(model: str) -> None:
-    if not model.startswith(GPT_IMAGE_MODEL_PREFIX):
+    if model != NANO_BANANA_MODEL and not model.startswith(GPT_IMAGE_MODEL_PREFIX):
         _die(
-            "model must be a GPT Image model (for example gpt-image-1.5, gpt-image-1, or gpt-image-1-mini)."
+            "model must be a GPT Image model or Nano Banana 2.1."
         )
+
+
+def _validate_nano_options(payload: Dict[str, Any], *, mask: bool = False, image_count: int = 0) -> None:
+    if payload.get("model") != NANO_BANANA_MODEL:
+        return
+    # 使用已验证的保守兼容范围，显式拒绝未支持字段，不静默丢弃用户要求。
+    if payload.get("quality") != "auto":
+        _die("Nano Banana 2.1 requires --quality auto.")
+    unsupported = [name for name in ("background", "output_format", "output_compression", "input_fidelity", "moderation") if payload.get(name) is not None]
+    if unsupported or mask:
+        _die("Nano Banana 2.1 does not support mask or these options: " + ", ".join(unsupported))
+    if image_count > 14 or int(payload.get("n", 1)) != 1:
+        _die("Nano Banana 2.1 allows at most 14 reference images and exactly one output.")
+    if len(str(payload.get("prompt", ""))) > 4000:
+        _die("Nano Banana 2.1 prompt must not exceed 4000 characters.")
 
 
 def _validate_transparency(background: Optional[str], output_format: str) -> None:
@@ -296,6 +309,7 @@ def _validate_transparency(background: Optional[str], output_format: str) -> Non
 
 def _validate_generate_payload(payload: Dict[str, Any]) -> None:
     _validate_model(str(payload.get("model", DEFAULT_MODEL)))
+    _validate_nano_options(payload)
     n = int(payload.get("n", 1))
     if n < 1 or n > 10:
         _die("n must be between 1 and 10")
@@ -509,7 +523,7 @@ def _create_client():
     assert config is not None
     base_url, key_path = config
     # 显式传入代理地址，禁止 SDK 在配置缺失时回退到官方默认端点并误送代理密钥。
-    return OpenAI(base_url=base_url, api_key=_read_api_key(key_path))
+    return OpenAI(base_url=base_url, api_key=_read_api_key(key_path), max_retries=0)
 
 
 def _create_async_client():
@@ -529,7 +543,7 @@ def _create_async_client():
     config = _runtime_config(False)
     assert config is not None
     base_url, key_path = config
-    return AsyncOpenAI(base_url=base_url, api_key=_read_api_key(key_path))
+    return AsyncOpenAI(base_url=base_url, api_key=_read_api_key(key_path), max_retries=0)
 
 
 def _slugify(value: str) -> str:
@@ -839,7 +853,9 @@ def _generate(args: argparse.Namespace) -> None:
 
     output_format = _normalize_output_format(args.output_format)
     _validate_transparency(args.background, output_format)
-    payload["output_format"] = output_format
+    _validate_nano_options(payload)
+    if args.model != NANO_BANANA_MODEL:
+        payload["output_format"] = output_format
     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
     downscaled = None
     if args.downscale_max_dim is not None:
@@ -912,7 +928,9 @@ def _edit(args: argparse.Namespace) -> None:
 
     output_format = _normalize_output_format(args.output_format)
     _validate_transparency(args.background, output_format)
-    payload["output_format"] = output_format
+    _validate_nano_options(payload, mask=mask_path is not None, image_count=len(image_paths))
+    if args.model != NANO_BANANA_MODEL:
+        payload["output_format"] = output_format
     _validate_input_fidelity(args.input_fidelity)
     output_paths = _build_output_paths(args.out, output_format, args.n, args.out_dir)
     downscaled = None
@@ -1036,7 +1054,7 @@ def _add_shared_args(parser: argparse.ArgumentParser, defaults: dict[str, object
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--ledger", help="JSON file that reserves one entry before each paid call")
-    parser.add_argument("--max-calls", type=int, default=defaults.get("maxCalls", HARD_MAX_CALLS))
+    parser.add_argument("--max-calls", type=int, help="Deprecated compatibility argument; ignored, calls are counted without a cap")
     parser.add_argument("--augment", dest="augment", action="store_true")
     parser.add_argument("--no-augment", dest="augment", action="store_false")
     parser.set_defaults(augment=True)
@@ -1105,8 +1123,8 @@ def main() -> int:
         _die("generate-batch is disabled; this project requires serial, user-gated image calls.")
     if getattr(args, "downscale_max_dim", None) is not None and args.downscale_max_dim < 1:
         _die("--downscale-max-dim must be >= 1")
-    if args.max_calls < 1 or args.max_calls > HARD_MAX_CALLS:
-        _die(f"--max-calls must be between 1 and {HARD_MAX_CALLS}.")
+    if args.max_calls is not None or "maxCalls" in defaults:
+        _warn("max-calls/maxCalls is deprecated and ignored; the ledger counts request attempts without a cap.")
 
     _validate_size(args.size)
     _validate_quality(args.quality)

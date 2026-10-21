@@ -1,5 +1,4 @@
 {
   "model": "gpt-image-2",
-  "quality": "high",
-  "maxCalls": 100
+  "quality": "high"
 }
