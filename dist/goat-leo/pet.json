@@ -5,5 +5,15 @@
   "spritesheetPath": "spritesheet.webp",
   "category": "western",
   "subcategory": "mascots",
-  "sourceUrl": "https://github.com/chenmi319/openpet-hatchery/tree/main/pets/goat-leo"
+  "sourceUrl": "https://github.com/chenmi319/openpet-hatchery/tree/main/pets/goat-leo",
+  "wardrobe": {
+    "outfits": [
+      {
+        "id": "red-blue-legend",
+        "displayName": "Red and Blue Legend",
+        "spritesheetPath": "outfits/red-blue-legend.webp"
+      }
+    ],
+    "schedule": []
+  }
 }

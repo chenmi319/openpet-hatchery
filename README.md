@@ -74,7 +74,7 @@ Final packages are imported manually into OpenPets before any Git or Gallery pub
 
 ## Runtime Compatibility and Authoring Boundaries
 
-The current pipeline targets **OpenPets v4.1.0 V1 WebP base pets**: 8×9 cells, 192×208 per cell, 57 used frames, with only `pet.json` and `spritesheet.webp` at the ZIP root. V1 remains supported; V2 gaze, SVG and wardrobes are optional host capabilities, not implemented output formats here. See `.opencode/skills/hatch-pet/references/codex-pet-contract.md` for metadata and file limits.
+The current pipeline targets **OpenPets v4.1.0 V1 WebP pets**: 8×9 cells, 192×208 per cell, 57 used frames. V1 remains supported and natively supports wardrobes without V2 gaze or SVG. See `.opencode/skills/hatch-pet/references/codex-pet-contract.md` for metadata and file limits.
 
 Previews use the host's equal-time cycle baseline, including 5500ms Idle and Normal/Relaxed waiting (1010/2200ms). GIF rounding is distributed at 10ms precision; previews loop for review while host waving/success/failure default to two cycles. Existing checked-in preview GIFs are historical and have not been regenerated during the contract sync; regenerate from accepted frames when reviewing a new candidate. A preview is not an actual host import test.
 
@@ -84,9 +84,15 @@ The installed `@open-pets/opencode@4.1.0` plugin emits six automatic reactions u
 
 Current GOAT Leo assets and their specifications remain the accepted historical version. Proposed dribbling-run and running-celebration designs need visual approval before replacing the package or its action descriptions. Updating the authoring rules does not mean those new animations are complete.
 
-### Future Wardrobes
+### Wardrobe Support
 
-Wardrobes can be added to V1 without converting to V2 or redoing the accepted base outfit. Each added outfit needs a full atlas with consistent identity, proportions, ball and approved actions. Lock the base animation design first, then add selected outfits and manifest/package support together. The current packager explicitly rejects wardrobe metadata rather than shipping missing outfit files. No outfit assets are created by this sync.
+Wardrobes are supported on V1 WebP pets without converting to V2 or modifying the accepted base outfit. Each added outfit provides a full 8×9 atlas (1536×1872 WebP) under `outfits/{id}.webp` with identical layout, matching proportions, locked hair/face geometry, and approved actions.
+
+`GOAT Leo` packages two complete outfits in a single release package `dist/goat-leo.zip`:
+1. **Default Outfit**: Classic Argentina blue-and-white stripes (`spritesheet.webp`).
+2. **Red and Blue Legend (`red-blue-legend`)**: Classic deep garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`).
+
+The packager (`scripts/package_pet.py`) validates both the base atlas and all declared outfit atlases, ensuring complete directory integrity and packaging them into the single `dist/goat-leo.zip` install package. Users can switch between outfits via the OpenPets desktop context menu (**Outfit**).
 
 ## Licensing
 

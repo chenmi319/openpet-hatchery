@@ -235,6 +235,63 @@ class PetPipelineTests(unittest.TestCase):
             with zipfile.ZipFile(output) as archive:
                 self.assertEqual(set(archive.namelist()), package.REQUIRED_FILES)
 
+    def test_package_pet_wardrobe_support(self) -> None:
+        import zipfile
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            pet_dir = root / "pet"
+            pet_dir.mkdir()
+            (pet_dir / "pet.json").write_text(
+                json.dumps(
+                    {
+                        "id": "goat-leo",
+                        "displayName": "GOAT Leo",
+                        "description": "test",
+                        "spritesheetPath": "spritesheet.webp",
+                        "wardrobe": {
+                            "outfits": [
+                                {
+                                    "id": "red-blue-legend",
+                                    "displayName": "Red and Blue Legend",
+                                    "spritesheetPath": "outfits/red-blue-legend.webp",
+                                }
+                            ]
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            Image.new("RGBA", package.ATLAS_SIZE, (0, 0, 0, 0)).save(
+                pet_dir / "spritesheet.webp", format="WEBP", lossless=True
+            )
+            outfits_dir = pet_dir / "outfits"
+            outfits_dir.mkdir()
+            Image.new("RGBA", package.ATLAS_SIZE, (0, 0, 0, 0)).save(
+                outfits_dir / "red-blue-legend.webp", format="WEBP", lossless=True
+            )
+
+            # Test validate_pet succeeds
+            package.validate_pet(pet_dir)
+
+            # Test default packaging (one pet, multiple outfits in one zip)
+            pet_zip = root / "goat-leo.zip"
+            package.package_pet(pet_dir, pet_zip)
+            with zipfile.ZipFile(pet_zip) as archive:
+                self.assertEqual(
+                    set(archive.namelist()),
+                    {"pet.json", "spritesheet.webp", "outfits/red-blue-legend.webp"},
+                )
+                manifest = json.loads(archive.read("pet.json").decode("utf-8"))
+                self.assertIn("wardrobe", manifest)
+
+            # Test stripped packaging
+            stripped_zip = root / "goat-leo-stripped.zip"
+            package.package_pet(pet_dir, stripped_zip, strip_wardrobe=True)
+            with zipfile.ZipFile(stripped_zip) as archive:
+                self.assertEqual(set(archive.namelist()), {"pet.json", "spritesheet.webp"})
+                base_manifest = json.loads(archive.read("pet.json").decode("utf-8"))
+                self.assertNotIn("wardrobe", base_manifest)
+
     def test_full_atlas_compose_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
