@@ -1,0 +1,5 @@
+An original chibi pixel character named {{DISPLAY_NAME}}.
+One fixed identity across every frame: compact build, distinctive facial features, recognizable expression and proportions. Full body with a slightly oversized head and a stable dark pixel outline.
+Full-resolution 192x208 pixel illustration per cell, crisp dark outline, controlled antialiasing, and no forced 2x pixel blocks.
+Zero external branding, logos, trademarks, scenery, floor, shadow, glow, motion trail, or detached floating artifacts.
+Transparent background.

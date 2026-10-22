@@ -1,0 +1,11 @@
+{
+  "idle": "Six-frame calm loop: subtle breathing, one natural blink, and stable planted feet. First and last frames seamlessly loop.",
+  "running-right": "Eight-frame rightward locomotion: smooth alternating strides, balanced posture, and active movement.",
+  "running-left": "Eight-frame leftward locomotion: independently drawn leftward run with balanced posture. Preserve any directional emblems or numbers.",
+  "waving": "Four-frame friendly greeting: relaxed standing pose, hand rises, gives a clear friendly wave, then returns.",
+  "jumping": "Five-frame dynamic leap: slight crouch, vertical jump up, apex pose, landing, and settle back onto baseline.",
+  "failed": "Eight-frame disappointment reaction: brief reaction to a missed attempt, shoulders/head lower, quiet pause, then calm recovery.",
+  "waiting": "Six-frame waiting loop: thoughtful standing pose, subtle rhythmic breathing, and alert stance.",
+  "running": "Six-frame forward-facing locomotion: energetic forward running motion with alternating limbs for stationary desktop work mode.",
+  "review": "Six-frame review and inspection loop: head/gaze turns to scan, brief thoughtful pause, and smooth return to ready stance."
+}

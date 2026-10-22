@@ -1,30 +1,58 @@
 # OpenPet Hatchery
 
-Project-local OpenCode skills, reproducible specifications, QA evidence, and final packages for community OpenPets pets.
+A reproducible toolkit, OpenCode skills, and multi-pet management framework for creating, validating, and packaging community OpenPets companions and multi-kit wardrobes.
 
-The first pet is **GOAT Leo**, an unofficial fan-made pixel companion inspired by Lionel Messi's 2022 world-champion era. This project is not affiliated with or endorsed by Lionel Messi, any federation, any club, or OpenPets.
+## Quickstart: Hatchery CLI
 
-## Featured Pet
-
-**GOAT Leo** is featured in the official [OpenPets Gallery](https://openpets.dev/pets/goat-leo-openpets).
+The hatchery provides a unified CLI (`scripts/hatchery.py`) for managing the full lifecycle of any number of pets:
 
 ```bash
+# 1. List all managed pets, wardrobe outfits, and package statuses
+python scripts/hatchery.py list
+
+# 2. Scaffold a brand-new pet from standardized templates
+python scripts/hatchery.py new cyber-cat --name "Cyber Cat" --category "western"
+
+# 3. Register a new wardrobe outfit for an existing pet
+python scripts/hatchery.py add-outfit cyber-cat neon-suit --name "Neon Suit"
+
+# 4. Validate pixel residue, grid alignments, and wardrobe integrity
+python scripts/hatchery.py validate [pet-id]
+
+# 5. Compile and package production-ready release ZIPs
+python scripts/hatchery.py package [pet-id]
+```
+
+## Reference Pet: GOAT Leo
+
+The flagship reference pet implemented in this repository is **GOAT Leo**, an unofficial fan-made pixel companion featuring a 2-outfit wardrobe (114 animated frames total):
+
+This project is not affiliated with or endorsed by Lionel Messi, any federation, any club, or OpenPets.
+
+```bash
+# Install via OpenPets CLI:
 npx -y install-pet goat-leo
 ```
 
-The official package is available from [OpenPets](https://zip.openpets.dev/pets/goat-leo-openpets/goat-leo.zip).
+The official release package is also available from [OpenPets Gallery](https://openpets.dev/pets/goat-leo-openpets).
 
-## Layout
+## Repository Architecture
 
 ```text
-.opencode/skills/       OpenCode hatch-pet and imagegen skills
+.opencode/skills/       OpenCode hatch-pet and imagegen skill workflows
 config/                 Public, non-secret generation defaults
-pets/<pet-id>/          Stable identity and animation specifications
+pets/
+  _template/            Standardized scaffolding templates (spec.md, identity.txt, state-overrides.json)
+  <pet-id>/             Per-pet identity, action overrides, and authoring specifications
 previews/<pet-id>/      Final thumbnail, contact sheet, and GIF previews
-dist/<pet-id>/          Final OpenPets runtime files
-dist/<pet-id>.zip       Gallery-ready package
+dist/
+  <pet-id>/             Runtime files (pet.json, spritesheet.webp, outfits/*.webp)
+  <pet-id>.zip          Gallery-ready, single-file release package
 submissions/            Gallery submission copy
-work/                   Ignored candidates, prompts, frames, ledgers, and QA work
+scripts/
+  hatchery.py           Unified multi-pet lifecycle and wardrobe management CLI
+  package_pet.py        Official OpenPets pet validator and packager
+work/<pet-id>/          Local candidates, prompts, frame extractions, ledgers, and QA
 ```
 
 ## Setup
@@ -88,9 +116,11 @@ Current GOAT Leo assets and their specifications remain the accepted historical 
 
 Wardrobes are supported on V1 WebP pets without converting to V2 or modifying the accepted base outfit. Each added outfit provides a full 8×9 atlas (1536×1872 WebP) under `outfits/{id}.webp` with identical layout, matching proportions, locked hair/face geometry, and approved actions.
 
-`GOAT Leo` packages two complete outfits in a single release package `dist/goat-leo.zip`:
+`GOAT Leo` release 1 packages two complete outfits in a single release package `dist/goat-leo.zip`:
 1. **Default Outfit (Classic Sky and White)**: Classic sky-blue and white vertical stripes with black #10 (`spritesheet.webp`). It is the golden reference for every action.
 2. **Red and Blue Legend (`red-blue-legend`)**: Garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`). All nine rows are the default outfit's frames with only the kit recolored, so pose, face, hands, gaze, timing and placement match the default outfit pixel for pixel. Rebuild with `python pets/goat-leo/recolor/recolor.py && python pets/goat-leo/recolor/build_atlas.py`.
+
+Flamingo Pink and Golden Farewell are not in release 1.
 
 The packager (`scripts/package_pet.py`) validates both the base atlas and all declared outfit atlases, ensuring complete directory integrity and packaging them into the single `dist/goat-leo.zip` install package. Users can switch between outfits via the OpenPets desktop context menu (**Outfit**).
 
