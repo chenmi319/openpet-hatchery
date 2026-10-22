@@ -90,7 +90,7 @@ Wardrobes are supported on V1 WebP pets without converting to V2 or modifying th
 
 `GOAT Leo` packages two complete outfits in a single release package `dist/goat-leo.zip`:
 1. **Default Outfit (Classic Sky and White)**: Classic sky-blue and white vertical stripes with black #10 (`spritesheet.webp`). It is the golden reference for every action.
-2. **Red and Blue Legend (`red-blue-legend`)**: Garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`). All nine rows are the default outfit's frames with only the kit recolored, so pose, face, hands, gaze, timing and placement match the default outfit pixel for pixel.
+2. **Red and Blue Legend (`red-blue-legend`)**: Garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`). All nine rows are the default outfit's frames with only the kit recolored, so pose, face, hands, gaze, timing and placement match the default outfit pixel for pixel. Rebuild with `python pets/goat-leo/recolor/recolor.py && python pets/goat-leo/recolor/build_atlas.py`.
 
 The packager (`scripts/package_pet.py`) validates both the base atlas and all declared outfit atlases, ensuring complete directory integrity and packaging them into the single `dist/goat-leo.zip` install package. Users can switch between outfits via the OpenPets desktop context menu (**Outfit**).
 
