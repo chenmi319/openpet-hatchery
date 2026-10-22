@@ -22,7 +22,8 @@ class HatcheryCliTests(unittest.TestCase):
         self.assertIn("GOAT Leo", res.stdout)
         self.assertIn("Classic Sky and White", res.stdout)
         self.assertIn("Red and Blue Legend", res.stdout)
-        self.assertNotIn("Flamingo Pink", res.stdout)  # 第一期只发布蓝白与红蓝
+        self.assertIn("Golden Farewell", res.stdout)
+        self.assertIn("Flamingo Pink", res.stdout)
 
     def test_hatchery_validate_goat_leo(self) -> None:
         res = subprocess.run(
@@ -34,7 +35,8 @@ class HatcheryCliTests(unittest.TestCase):
         self.assertIn("Package integrity: OK", res.stdout)
         self.assertIn("Base atlas (spritesheet.webp): Valid", res.stdout)
         self.assertIn("Wardrobe outfit (red-blue-legend.webp): Valid", res.stdout)
-        self.assertNotIn("flamingo-pink.webp", res.stdout)
+        self.assertIn("Wardrobe outfit (golden-farewell.webp): Valid", res.stdout)
+        self.assertIn("Wardrobe outfit (flamingo-pink.webp): Valid", res.stdout)
 
     def test_hatchery_new_scaffold(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -116,13 +116,17 @@ Current GOAT Leo assets and their specifications remain the accepted historical 
 
 Wardrobes are supported on V1 WebP pets without converting to V2 or modifying the accepted base outfit. Each added outfit provides a full 8×9 atlas (1536×1872 WebP) under `outfits/{id}.webp` with identical layout, matching proportions, locked hair/face geometry, and approved actions.
 
-`GOAT Leo` release 1 packages two complete outfits in a single release package `dist/goat-leo.zip`:
+`GOAT Leo` packages four complete outfits in a single release package `dist/goat-leo.zip`. The default and gold-number variant stay adjacent for easy comparison, followed by the classic red-blue and modern pink-black kits:
 1. **Default Outfit (Classic Sky and White)**: Classic sky-blue and white vertical stripes with black #10 (`spritesheet.webp`). It is the golden reference for every action.
-2. **Red and Blue Legend (`red-blue-legend`)**: Garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`). All nine rows are the default outfit's frames with only the kit recolored, so pose, face, hands, gaze, timing and placement match the default outfit pixel for pixel. Rebuild with `python pets/goat-leo/recolor/recolor.py && python pets/goat-leo/recolor/build_atlas.py`.
+2. **Golden Farewell (`golden-farewell`)**: The default sky-blue and white kit with only the #10 recolored gold (`outfits/golden-farewell.webp`); stripes, shorts and every frame otherwise match the default outfit. Rebuild with `python pets/goat-leo/recolor/recolor.py golden-farewell && python pets/goat-leo/recolor/build_atlas.py golden-farewell`.
+3. **Red and Blue Legend (`red-blue-legend`)**: Garnet and navy vertical stripes with golden-yellow #10 (`outfits/red-blue-legend.webp`). All nine rows are the default outfit's frames with only the kit recolored, so pose, face, hands, gaze, timing and placement match the default outfit pixel for pixel. Rebuild with `python pets/goat-leo/recolor/recolor.py && python pets/goat-leo/recolor/build_atlas.py`.
+4. **Flamingo Pink (`flamingo-pink`)**: An approved Miami-inspired pink-and-black concept kit (`outfits/flamingo-pink.webp`), not a replica of a specific season's official uniform. The shirt and socks are pink, with near-black #10 and shorts; all nine rows preserve the default outfit's poses and source shading, including faint stripe-seam texture. Rebuild with `python pets/goat-leo/recolor/recolor.py flamingo-pink && python pets/goat-leo/recolor/build_atlas.py flamingo-pink`.
 
-Flamingo Pink and Golden Farewell are not in release 1.
+All recolored outfits share the same number mask. Short, arm-occluded strokes remain included; the right-running third frame uses a source-pixel-hash-bound mask because its number touches the sleeve outline. Replacing that base frame requires reviewing the mask again; the regression test rejects an outdated source hash.
 
 The packager (`scripts/package_pet.py`) validates both the base atlas and all declared outfit atlases, ensuring complete directory integrity and packaging them into the single `dist/goat-leo.zip` install package. Users can switch between outfits via the OpenPets desktop context menu (**Outfit**).
+
+The four-outfit package received user visual acceptance and a successful manual desktop import on 2026-10-22. Automated validation passed for all four atlases, with 28 tests passing; this records the reviewed package rather than a guarantee for other host versions.
 
 ## Licensing
 

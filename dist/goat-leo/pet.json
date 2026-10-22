@@ -10,9 +10,19 @@
   "wardrobe": {
     "outfits": [
       {
+        "id": "golden-farewell",
+        "displayName": "Golden Farewell",
+        "spritesheetPath": "outfits/golden-farewell.webp"
+      },
+      {
         "id": "red-blue-legend",
         "displayName": "Red and Blue Legend",
         "spritesheetPath": "outfits/red-blue-legend.webp"
+      },
+      {
+        "id": "flamingo-pink",
+        "displayName": "Flamingo Pink",
+        "spritesheetPath": "outfits/flamingo-pink.webp"
       }
     ],
     "schedule": []
