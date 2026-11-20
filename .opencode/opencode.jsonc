@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp",
+          "--allow-unrestricted-file-access",
+          "--viewport-size",
+          "1280x800",
+          // 如需按项目持久化登录状态，可启用下面两行；路径相对于 MCP 进程的当前工作目录。
+          // 不支持使用 "~" 表示用户主目录，请使用相对路径或绝对路径。
+          "--user-data-dir",
+          "./.playwright-mcp",
+          // 移动端调试时，可临时改成下面两行：
+          // "--device",
+          // "iPhone 15"
+        ],
+        "disabled": false,
+      },
+  }
+}
